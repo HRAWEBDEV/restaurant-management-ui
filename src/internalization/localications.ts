@@ -25,5 +25,9 @@ function isLocale(value: string): value is Locale {
   return locales.includes(value as Locale);
 }
 
-export { localeNames, locales, defaultLocale, isLocale };
+function isActiveLocale(value: string): value is Locale {
+  return isLocale(value) && localeNames[value].active;
+}
+
+export { localeNames, locales, defaultLocale, isLocale, isActiveLocale };
 export type { Locale };
