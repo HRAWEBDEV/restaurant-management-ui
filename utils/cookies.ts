@@ -1,4 +1,4 @@
-export type CookieOptions = {
+type CookieOptions = {
   path?: string
   domain?: string
   expires?: Date
@@ -13,7 +13,7 @@ const DEFAULT_OPTIONS: Required<Pick<CookieOptions, 'path' | 'sameSite'>> = {
   sameSite: 'lax',
 }
 
-export function setCookie(name: string, value: string, options: CookieOptions = {}): void {
+function setCookie(name: string, value: string, options: CookieOptions = {}): void {
   if (typeof document === 'undefined') return
 
   const { path, domain, expires, maxAge, secure, sameSite, partitioned } = {
@@ -34,7 +34,7 @@ export function setCookie(name: string, value: string, options: CookieOptions = 
   document.cookie = cookieString
 }
 
-export function getCookie(name: string): string | null {
+function getCookie(name: string): string | null {
   if (typeof document === 'undefined') return null
 
   const target = `${encodeURIComponent(name)}=`
@@ -46,3 +46,6 @@ export function getCookie(name: string): string | null {
   }
   return null
 }
+
+export { setCookie, getCookie }
+export type { CookieOptions }
