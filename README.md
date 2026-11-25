@@ -18,7 +18,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This project uses [`next/font`](https://nextjs.org/docs/app/api-reference/components/font) with local fonts: `IRANSansWebFaNum` for `fa` and variable `Roboto` for `en` (both in `public/fonts`). The default is set per locale in `src/app/[lang]/layout.tsx` via the `--font-sans` CSS variable; `font-iran-sans` and `font-roboto` utilities are available from `src/app/globals.css`.
 
 ## Learn More
 

@@ -12,13 +12,23 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 - `npm run dev` / `build` / `lint` — standard Next.js.
 - No typecheck script; run `npx tsc --noEmit` manually.
-- Tests: Vitest + jsdom + Testing Library. `npm run test` is **watch mode**; use `npm run test:run` for one-shot. Single file: `npx vitest run __tests__/page.test.tsx`. Tests live in `__tests__/` (not colocated).
+- Tests: Vitest + jsdom + Testing Library. `npm run test` is **watch mode**; use `npm run test:run` for one-shot. Single file: `npx vitest run src/app/__tests__/page.test.tsx`. Tests live in `__tests__/` directories (not colocated with source files).
 - Order when verifying: `lint`, then `tsc --noEmit`, then `test:run`.
 
 ## Stack quirks
 
 - Next.js 16 + React 19 + Tailwind CSS **v4** — no `tailwind.config`; styling is CSS-based in `src/app/globals.css` (theme tokens live there). CSS is processed via `@tailwindcss/turbopack` (Turbopack rules in `next.config.ts`, which also enables `cacheComponents` and `partialPrefetching`).
 - `components.json`: shadcn style **base-nova**, RSC on, lucide icons, base color neutral. Add UI primitives via the shadcn CLI into `src/components/ui`; do not hand-write them to match other registries.
+
+## Proxy (middleware)
+
+- This Next.js version replaces `middleware.ts` with `proxy.ts` — the file is `src/proxy.ts` and the exported handler function is `proxy` (not `middleware`). Read the docs in `node_modules/next/dist/docs/` before touching it.
+- `src/proxy.ts` redirects locale-less paths to a locale-prefixed path (cookie fallback → default `fa`), and skips `api`, `_next/static`, `_next/image`, and any path containing a dot via its matcher.
+
+## Fonts
+
+- Local fonts in `public/fonts`: `IRANSansWebFaNum` (fa, weights 200/300/400/500/700/900) and variable `Roboto` (en). Loaded via `next/font/local` in `src/app/[lang]/layout.tsx` as `--font-iran-sans` / `--font-roboto`; both are registered in `@theme inline` in `src/app/globals.css` (`font-iran-sans` / `font-roboto` utilities).
+- The default sans is set per locale on `<html>` in `src/app/[lang]/layout.tsx` (`--font-sans` → `var(--font-iran-sans)` for fa, `var(--font-roboto)` for en). Custom `--*` style props need an `as CSSProperties` cast.
 
 ## Path aliases & layout
 
@@ -35,3 +45,5 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 1. Always create a `__tests__` directory inside the directory being tested (e.g. tests for `src/utils/cookies.ts` go in `src/utils/__tests__/`).
 2. Export at the end of the file when there are multiple exports.
 3. Always export types separately (a dedicated `export type { ... }` statement, not inline with value exports).
+4. Keep docs in sync: if a change makes `README.md` or any section of this file outdated, update it, and document any new setup, conventions, or features worth remembering in the appropriate place (`README.md` for user-facing setup, `AGENTS.md` for agent-facing conventions) in the same change set.
+5. Doc audit after significant milestones (new route group, new infrastructure, dependency changes, or an accumulation of feature work): re-scan the project and verify every claim in `README.md` and this file against reality — update stale claims, document missed additions, and prune over-grown sections. Don't audit after every small change.
