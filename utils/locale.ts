@@ -20,5 +20,5 @@ function getLocaleCookie(): Locale {
   return defaultLocale
 }
 
-export { setLocaleCookie, getLocaleCookie }
+export { setLocaleCookie, getLocaleCookie, LOCALE_COOKIE_NAME }
 export type { Locale }
