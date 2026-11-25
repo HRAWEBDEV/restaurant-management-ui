@@ -7,3 +7,25 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+
+## Commands
+
+- `npm run dev` / `build` / `lint` — standard Next.js.
+- No typecheck script; run `npx tsc --noEmit` manually.
+- Tests: Vitest + jsdom + Testing Library. `npm run test` is **watch mode**; use `npm run test:run` for one-shot. Single file: `npx vitest run __tests__/page.test.tsx`. Tests live in `__tests__/` (not colocated).
+- Order when verifying: `lint`, then `tsc --noEmit`, then `test:run`.
+
+## Stack quirks
+
+- Next.js 16 + React 19 + Tailwind CSS **v4** — no `tailwind.config`; styling is CSS-based in `src/app/globals.css` (theme tokens live there). CSS is processed via `@tailwindcss/turbopack` (Turbopack rules in `next.config.ts`, which also enables `cacheComponents` and `partialPrefetching`).
+- `components.json`: shadcn style **base-nova**, RSC on, lucide icons, base color neutral. Add UI primitives via the shadcn CLI into `src/components/ui`; do not hand-write them to match other registries.
+
+## Path aliases & layout
+
+- `@/*` → `src/*`. App Router pages in `src/app`, UI primitives in `src/components/ui`, app components in `src/components`, hooks in `src/hooks`, utils in `src/lib`.
+
+## i18n (hard-won)
+
+- Locales: `fa` is default and the only **active** locale; `en` exists but `active: false`. `fa` is **RTL** with a **Jalali calendar** — use `date-fns-jalali` / `@daypicker/persian` for fa date work, not plain `date-fns`/`react-day-picker`.
+- Config in `internalization/localications.ts` (note the misspelling — don't "fix" without renaming imports). Dictionaries per namespace: `internalization/dictionaries/<namespace>/` containing `fa.json`, `en.json`, and a `dictionary.ts` that imports `server-only` and exports `getDictionary(locale)`. Dictionary types are derived from the JSON shape.
+- Adding translated strings = create a new namespace directory in that pattern; loaders are server-only so dictionaries cannot leak into client components.
