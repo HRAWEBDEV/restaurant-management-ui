@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server'
-import { defaultLocale, isLocale } from '../internalization/localications'
-import { LOCALE_COOKIE_NAME } from '../utils/locale'
+import { defaultLocale, isLocale } from './internalization/localications'
+import { LOCALE_COOKIE_NAME } from './utils/locale'
 
 function getLocaleFromCookie(request: NextRequest): typeof defaultLocale {
   const value = request.cookies.get(LOCALE_COOKIE_NAME)?.value

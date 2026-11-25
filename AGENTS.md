@@ -22,16 +22,16 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## Path aliases & layout
 
-- `@/*` → `src/*`. App Router pages in `src/app`, UI primitives in `src/components/ui`, app components in `src/components`, hooks in `src/hooks`, utils in `src/lib`.
+- `@/*` → `src/*`, `@utils/*` → `src/utils/*`. App Router pages in `src/app`, UI primitives in `src/components/ui`, app components in `src/components`, hooks in `src/hooks`, shared helpers in `src/lib`, cookie/locale helpers in `src/utils`, i18n config and dictionaries in `src/internalization`.
 
 ## i18n (hard-won)
 
 - Locales: `fa` is default and the only **active** locale; `en` exists but `active: false`. `fa` is **RTL** with a **Jalali calendar** — use `date-fns-jalali` / `@daypicker/persian` for fa date work, not plain `date-fns`/`react-day-picker`.
-- Config in `internalization/localications.ts` (note the misspelling — don't "fix" without renaming imports). Dictionaries per namespace: `internalization/dictionaries/<namespace>/` containing `fa.json`, `en.json`, and a `dictionary.ts` that imports `server-only` and exports `getDictionary(locale)`. Dictionary types are derived from the JSON shape.
+- Config in `src/internalization/localications.ts` (note the misspelling — don't "fix" without renaming imports). Dictionaries per namespace: `src/internalization/dictionaries/<namespace>/` containing `fa.json`, `en.json`, and a `dictionary.ts` that imports `server-only` and exports `getDictionary(locale)`. Dictionary types are derived from the JSON shape.
 - Adding translated strings = create a new namespace directory in that pattern; loaders are server-only so dictionaries cannot leak into client components.
 
 ## Conventions (hard rules)
 
-1. Always create a `__tests__` directory inside the directory being tested (e.g. tests for `utils/cookies.ts` go in `utils/__tests__/`).
+1. Always create a `__tests__` directory inside the directory being tested (e.g. tests for `src/utils/cookies.ts` go in `src/utils/__tests__/`).
 2. Export at the end of the file when there are multiple exports.
 3. Always export types separately (a dedicated `export type { ... }` statement, not inline with value exports).
