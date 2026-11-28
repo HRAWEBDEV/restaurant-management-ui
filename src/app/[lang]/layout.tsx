@@ -14,6 +14,7 @@ import { LocaleProvider } from "@/internalization/LocaleProvider";
 import { ReactQueryProvider } from "@/services/react-query-provider";
 import { DirectionProvider } from "@/components/ui/direction";
 import { ThemeProvider } from "@/components/ui/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 const iranSans = localFont({
   src: [
@@ -109,6 +110,7 @@ export default async function RootLayout({
             <DirectionProvider direction={dir}>
               <LocaleProvider locale={lang}>{children}</LocaleProvider>
             </DirectionProvider>
+            <Toaster richColors />
           </ThemeProvider>
         </ReactQueryProvider>
       </body>
