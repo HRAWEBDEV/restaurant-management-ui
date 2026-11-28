@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# restaurant-management-ui
+
+Next.js dashboard UI for a restaurant management system. Next.js 16 + React 19 + Tailwind CSS v4 + TypeScript.
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000). The app redirects to a locale-prefixed route (`/fa` by default — `fa` is the only active locale, RTL).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Other scripts:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/api-reference/components/font) with local fonts: `IRANSansWebFaNum` for `fa` and variable `Roboto` for `en` (both in `public/fonts`). The default is set per locale in `src/app/[lang]/layout.tsx` via the `--font-sans` CSS variable; `font-iran-sans` and `font-roboto` utilities are available from `src/app/globals.css`.
+```bash
+npm run build        # production build
+npm run lint         # eslint
+npm run test:run     # vitest one-shot (npm run test = watch mode)
+npx tsc --noEmit     # typecheck (no dedicated script)
+```
 
-## Learn More
+The project uses local fonts (`IRANSansWebFaNum` for `fa`, variable `Roboto` for `en`, in `public/fonts`). The default is set per locale in `src/app/[lang]/layout.tsx` via the `--font-sans` CSS variable; `font-iran-sans` and `font-roboto` utilities come from `src/app/globals.css`.
 
-To learn more about Next.js, take a look at the following resources:
+## Versioning & Releases
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The app follows [Semantic Versioning](https://semver.org) (`MAJOR.MINOR.PATCH`) with release automation:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Conventional Commits**: commit/PR titles like `feat:`, `fix:`, `chore:` (scope optional, e.g. `feat(menu): add categories`). `feat:` → MINOR bump, `fix:` → PATCH, `BREAKING CHANGE:` footer → MAJOR.
+- **release-please**: a GitHub Action (`.github/workflows/release-please.yml`) watches `main` and opens/updates a **Release PR** that bumps the version and writes `CHANGELOG.md`. A release happens when a human merges that PR — the bot then tags the release (`v0.2.0`) and creates a GitHub Release.
+- **Version in the UI**: `next.config.ts` reads `package.json` at build time and exposes it as `process.env.APP_VERSION`. App code reads it via `getAppVersion()` (`src/lib/version.ts`); it is displayed in the UI through the `<AppVersion />` component (`src/components/app-version.tsx`, shown in the home page footer).
+- Never bump `package.json`'s `version` or edit release sections in `CHANGELOG.md` by hand — release-please owns both.
+- **Milestones**: use GitHub milestones (named `v0.2.0` etc.) to group issues/PRs per planned release; release-please links merged PRs into the matching release notes.

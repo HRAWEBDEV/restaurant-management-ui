@@ -40,6 +40,13 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Config in `src/internalization/localications.ts` (note the misspelling — don't "fix" without renaming imports). Dictionaries per namespace: `src/internalization/dictionaries/<namespace>/` containing `fa.json`, `en.json`, and a `dictionary.ts` that imports `server-only` and exports `getDictionary(locale)`. Dictionary types are derived from the JSON shape.
 - Adding translated strings = create a new namespace directory in that pattern; loaders are server-only so dictionaries cannot leak into client components.
 
+## Versioning & releases
+
+- Versioning is SemVer (`MAJOR.MINOR.PATCH`), tracked in `package.json` `version` and mirrored by `.release-please-manifest.json` — these are maintained by release-please, never edited by hand.
+- Commits/PR titles follow [Conventional Commits](https://www.conventionalcommits.org): `feat:`, `fix:`, `chore:`, `docs:`, etc. (scope optional). `feat:` → MINOR, `fix:` → PATCH, `BREAKING CHANGE:` footer → MAJOR.
+- Releases are automated by release-please (`.github/workflows/release-please.yml`): it opens/updates a Release PR with the version bump + `CHANGELOG.md` entries; a release happens when a human merges that PR. Do not bump versions or write changelog sections manually.
+- The app version is injected at build time: `next.config.ts` reads `package.json` and exposes it as `process.env.APP_VERSION` (via the `env` config, always bundled). Read it in app code through `getAppVersion()` from `src/lib/version.ts` (fallback `"unknown"` when unset); UI display via `<AppVersion />` in `src/components`.
+
 ## Conventions (hard rules)
 
 1. Always create a `__tests__` directory inside the directory being tested (e.g. tests for `src/utils/cookies.ts` go in `src/utils/__tests__/`).
