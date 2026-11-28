@@ -20,6 +20,16 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Next.js 16 + React 19 + Tailwind CSS **v4** — no `tailwind.config`; styling is CSS-based in `src/app/globals.css` (theme tokens live there). CSS is processed via `@tailwindcss/turbopack` (Turbopack rules in `next.config.ts`, which also enables `cacheComponents` and `partialPrefetching`).
 - `components.json`: shadcn style **base-nova**, RSC on, lucide icons, base color neutral. Add UI primitives via the shadcn CLI into `src/components/ui`; do not hand-write them to match other registries.
 
+## UI rules (hard rules)
+
+Full reference: `docs/design-system.md`. The `ui-guidelines` skill (`.opencode/skills/ui-guidelines/`) carries the same rules — load it when doing UI work. The short version:
+
+- **Tokens only** — never hardcode colors/radii/shadows/fonts in components; rebrand by editing the token values in `src/app/globals.css` (`:root` / `.dark`).
+- **RTL discipline** — `fa` is RTL: use logical utilities (`ms/me`, `ps/pe`, `start/end`, `text-start/end`, `rounded-s/e`, `border-s/e`); never `ml/mr`, `pl/pr`, `left/right`, `text-left/right`.
+- **Components** — primitives only via the shadcn CLI (`base-nova`) into `src/components/ui`; composed app components in `src/components` (PascalCase); providers split into `<name>-context.ts` + `<Name>Provider.tsx`.
+- **i18n** — no user-facing string literals in JSX; dictionary namespaces only (`src/internalization/dictionaries/`), loaders are server-only; `fa` dates via `date-fns-jalali` / `@daypicker/persian`.
+- **Verification gate** — `npm run lint` → `npx tsc --noEmit` → `npm run test:run` before declaring UI work done.
+
 ## Proxy (middleware)
 
 - This Next.js version replaces `middleware.ts` with `proxy.ts` — the file is `src/proxy.ts` and the exported handler function is `proxy` (not `middleware`). Read the docs in `node_modules/next/dist/docs/` before touching it.
