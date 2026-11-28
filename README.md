@@ -28,6 +28,7 @@ The app follows [Semantic Versioning](https://semver.org) (`MAJOR.MINOR.PATCH`) 
 
 - **Conventional Commits**: commit/PR titles like `feat:`, `fix:`, `chore:` (scope optional, e.g. `feat(menu): add categories`). `feat:` → MINOR bump, `fix:` → PATCH, `BREAKING CHANGE:` footer → MAJOR.
 - **release-please**: a GitHub Action (`.github/workflows/release-please.yml`) watches `main` and opens/updates a **Release PR** that bumps the version and writes `CHANGELOG.md`. A release happens when a human merges that PR — the bot then tags the release (`v0.2.0`) and creates a GitHub Release.
+- **Required repo setting**: Settings → Actions → General → Workflow permissions → enable **"Allow GitHub Actions to create and approve pull requests"** (and the same option on the org level, if it is overridden there). Without it, release-please fails with "GitHub Actions is not permitted to create or approve pull requests".
 - **Version in the UI**: `next.config.ts` reads `package.json` at build time and exposes it as `process.env.APP_VERSION`. App code reads it via `getAppVersion()` (`src/lib/version.ts`); it is displayed in the UI through the `<AppVersion />` component (`src/components/app-version.tsx`, shown in the home page footer).
 - Never bump `package.json`'s `version` or edit release sections in `CHANGELOG.md` by hand — release-please owns both.
 - **Milestones**: use GitHub milestones (named `v0.2.0` etc.) to group issues/PRs per planned release; release-please links merged PRs into the matching release notes.

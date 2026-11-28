@@ -45,6 +45,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Versioning is SemVer (`MAJOR.MINOR.PATCH`), tracked in `package.json` `version` and mirrored by `.release-please-manifest.json` — these are maintained by release-please, never edited by hand.
 - Commits/PR titles follow [Conventional Commits](https://www.conventionalcommits.org): `feat:`, `fix:`, `chore:`, `docs:`, etc. (scope optional). `feat:` → MINOR, `fix:` → PATCH, `BREAKING CHANGE:` footer → MAJOR.
 - Releases are automated by release-please (`.github/workflows/release-please.yml`): it opens/updates a Release PR with the version bump + `CHANGELOG.md` entries; a release happens when a human merges that PR. Do not bump versions or write changelog sections manually.
+- This requires the repo setting "Allow GitHub Actions to create and approve pull requests" (Settings → Actions → General → Workflow permissions); if it gets disabled (or overridden by an org-level policy), release-please fails with "GitHub Actions is not permitted to create or approve pull requests".
 - The app version is injected at build time: `next.config.ts` reads `package.json` and exposes it as `process.env.APP_VERSION` (via the `env` config, always bundled). Read it in app code through `getAppVersion()` from `src/lib/version.ts` (fallback `"unknown"` when unset); UI display via `<AppVersion />` in `src/components`.
 
 ## Conventions (hard rules)
