@@ -12,6 +12,7 @@ import {
 } from "@/internalization/localications";
 import { LocaleProvider } from "@/internalization/LocaleProvider";
 import { ReactQueryProvider } from "@/services/react-query-provider";
+import { AuthBroadcastProvider } from "@/services/AuthBroadcastProvider";
 import { DirectionProvider } from "@/components/ui/direction";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
@@ -101,17 +102,19 @@ export default async function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <ReactQueryProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <DirectionProvider direction={dir}>
-              <LocaleProvider locale={lang}>{children}</LocaleProvider>
-            </DirectionProvider>
-            <Toaster richColors />
-          </ThemeProvider>
+          <AuthBroadcastProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <DirectionProvider direction={dir}>
+                <LocaleProvider locale={lang}>{children}</LocaleProvider>
+              </DirectionProvider>
+              <Toaster richColors />
+            </ThemeProvider>
+          </AuthBroadcastProvider>
         </ReactQueryProvider>
       </body>
     </html>
