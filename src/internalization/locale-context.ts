@@ -1,5 +1,6 @@
 import { createContext, useContext } from "react";
 import { localeNames, type Locale } from "@/internalization/localications";
+import { OutOfContextError } from "@/utils/out-of-context";
 
 type LocaleInfo = (typeof localeNames)[Locale];
 
@@ -14,7 +15,7 @@ function useLocale(): LocaleContextValue {
   const context = useContext(LocaleContext);
 
   if (!context) {
-    throw new Error("useLocale must be used within a LocaleProvider");
+    throw new OutOfContextError("useLocale", "LocaleProvider");
   }
 
   return context;

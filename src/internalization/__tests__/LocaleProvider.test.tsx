@@ -53,7 +53,7 @@ describe("LocaleProvider", () => {
 
   it("throws when useLocale is used outside of a LocaleProvider", () => {
     expect(() => render(<Probe />)).toThrow(
-      "useLocale must be used within a LocaleProvider"
+      "`useLocale` was called outside of its provider. Wrap the component in the corresponding `<LocaleProvider>`."
     );
   });
 });
