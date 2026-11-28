@@ -11,6 +11,8 @@ import {
   locales,
 } from "@/internalization/localications";
 import { ReactQueryProvider } from "@/services/react-query-provider";
+import { DirectionProvider } from "@/components/ui/direction";
+import { ThemeProvider } from "@/components/ui/theme-provider";
 
 const iranSans = localFont({
   src: [
@@ -83,6 +85,7 @@ export default async function RootLayout({
   return (
     <html
       lang={lang}
+      suppressHydrationWarning
       dir={dir}
       style={{ "--font-sans": lang === "fa" ? "var(--font-iran-sans)" : "var(--font-roboto)" } as CSSProperties}
       className={cn(
@@ -95,7 +98,16 @@ export default async function RootLayout({
       )}
     >
       <body className="min-h-full flex flex-col">
-        <ReactQueryProvider>{children}</ReactQueryProvider>
+        <ReactQueryProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <DirectionProvider direction={dir}>{children}</DirectionProvider>
+          </ThemeProvider>
+        </ReactQueryProvider>
       </body>
     </html>
   );
