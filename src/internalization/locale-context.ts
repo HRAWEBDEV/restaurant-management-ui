@@ -5,6 +5,7 @@ type LocaleInfo = (typeof localeNames)[Locale];
 
 type LocaleContextValue = {
   locale: Locale;
+  userLocaleTimeZone: string;
 } & LocaleInfo;
 
 const LocaleContext = createContext<LocaleContextValue | null>(null);

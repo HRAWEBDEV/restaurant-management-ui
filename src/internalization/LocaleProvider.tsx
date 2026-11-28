@@ -10,10 +10,16 @@ type LocaleProviderProps = {
 };
 
 function LocaleProvider({ locale, children }: LocaleProviderProps) {
-  const value = useMemo(
-    () => ({ locale, ...localeNames[locale] }),
-    [locale]
-  );
+  const value = useMemo(() => {
+    const userLocaleTimeZone =
+      Intl.DateTimeFormat().resolvedOptions().timeZone ?? "UTC";
+
+    return {
+      locale,
+      ...localeNames[locale],
+      userLocaleTimeZone,
+    };
+  }, [locale]);
 
   return (
     <LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>

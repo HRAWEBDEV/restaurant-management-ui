@@ -12,6 +12,9 @@ function Probe() {
 describe("LocaleProvider", () => {
   afterEach(cleanup);
 
+  const userLocaleTimeZone =
+    Intl.DateTimeFormat().resolvedOptions().timeZone ?? "UTC";
+
   it("injects the full locale info to children", () => {
     render(
       <LocaleProvider locale="fa">
@@ -19,16 +22,15 @@ describe("LocaleProvider", () => {
       </LocaleProvider>
     );
 
-    expect(screen.getByTestId("probe").textContent).toBe(
-      JSON.stringify({
-        locale: "fa",
-        name: "فارسی",
-        shortName: "FA",
-        dir: "rtl",
-        calendarType: "jalali",
-        active: true,
-      })
-    );
+    expect(JSON.parse(screen.getByTestId("probe").textContent ?? "")).toEqual({
+      locale: "fa",
+      name: "فارسی",
+      shortName: "FA",
+      dir: "rtl",
+      calendarType: "jalali",
+      userLocaleTimeZone,
+      active: true,
+    });
   });
 
   it("provides full locale info for a ltr locale", () => {
@@ -38,16 +40,15 @@ describe("LocaleProvider", () => {
       </LocaleProvider>
     );
 
-    expect(screen.getByTestId("probe").textContent).toBe(
-      JSON.stringify({
-        locale: "en",
-        name: "English",
-        shortName: "EN",
-        dir: "ltr",
-        calendarType: "gregory",
-        active: false,
-      })
-    );
+    expect(JSON.parse(screen.getByTestId("probe").textContent ?? "")).toEqual({
+      locale: "en",
+      name: "English",
+      shortName: "EN",
+      dir: "ltr",
+      calendarType: "gregory",
+      userLocaleTimeZone,
+      active: false,
+    });
   });
 
   it("throws when useLocale is used outside of a LocaleProvider", () => {
