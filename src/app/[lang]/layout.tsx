@@ -10,6 +10,7 @@ import {
   localeNames,
   locales,
 } from "@/internalization/localications";
+import { ReactQueryProvider } from "@/services/react-query-provider";
 
 const iranSans = localFont({
   src: [
@@ -93,7 +94,9 @@ export default async function RootLayout({
         roboto.variable
       )}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <ReactQueryProvider>{children}</ReactQueryProvider>
+      </body>
     </html>
   );
 }
